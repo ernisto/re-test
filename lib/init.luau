@@ -10,14 +10,17 @@ local reset = display.reset
 local dim = display.dim
 
 type case_defs = { [string]: test_fn }
-type case = { name: string, fn: test_fn, skipping: true?, focused: true? }
+type case = { name: string, fn: test_fn, skipped: true?, focused: true? }
 type test_fn = () -> ()
 type spec = { name: string, path: string, run: case_defs, focus: case_defs, skip: case_defs }
 
 -- functions
 local function spec_test(input_name: string?): (spec, ...case_defs)
 	local path = debug.info(2, 's')
-	local name = input_name or path:gsub('%.luau?$', ''):gsub('%.spec$', ''):match('([^/]+)$')
+	local lune_path = path:match('%[string (%b"")%]')
+	if lune_path then path = lune_path:sub(2, -2) end
+
+	local name = input_name or path:gsub('%.luau?$', ''):gsub('%.spec$', ''):match('([^/\\]+)$')
 	local run = {}
 	local focus = {}
 	local skip = {}
@@ -83,7 +86,7 @@ local function run(specs: { spec })
 
 		for _, case in tests do
 			local name = case.name:gsub('^%l', string.upper):gsub('_', ' ')
-			if case.skipping then
+			if case.skipped then
 				print('│   ' .. tag(3, display.nerdfont.skip, 'SKIP') .. ' ' .. txt_color(3) .. bold(name) .. reset)
 				skipped += 1
 				continue

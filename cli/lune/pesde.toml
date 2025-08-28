@@ -1,5 +1,5 @@
 name = "ernisto/test"
-version = "0.0.2-alpha.2"
+version = "0.1.0-alpha.2"
 description = "minimal test runner"
 authors = ["ernisto <joaovitordesouza707@gmail.com>"]
 license = "MIT"
@@ -22,4 +22,5 @@ pesde = "^0.7.1"
 lune = ">0.8.0"
 
 [dependencies]
-test = { name = "ernisto/test", version = "^0.0.2-alpha.2", target = "luau" }
+# test = { path = "../../" }
+test = { name = "ernisto/test", version = "^0.1.0-alpha.2", target = "luau" }

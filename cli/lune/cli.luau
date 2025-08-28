@@ -2,14 +2,19 @@ local fs = require('@lune/fs')
 local process = require('@lune/process')
 local test = require('@pkg/test')
 
-local path = process.args[1] or '.'
-local parents_children = { { path } }
+local paths = if process.args[1] then process.args else { '.' }
+local parents_children = { paths }
 local specs = {}
 
 for _, children in parents_children do
 	for _, child in children do
 		if fs.isDir(child) then
-			table.insert(parents_children, fs.readDir(child))
+			local children_path = {}
+			for i, child_name in fs.readDir(child) do
+				children_path[i] = child .. '/' .. child_name
+			end
+
+			table.insert(parents_children, children_path)
 			continue
 		end
 		if not child:match('%.spec%.luau?$') then continue end

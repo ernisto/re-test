@@ -1,49 +1,148 @@
-# Usage
-The CLI scan all the descendants of the given path or current directory for
-all .spec.lua(u) files, requiring them, and collecting all tests to be run.
-Theres 3 main ways to define ur .spec files
-**tests/a.spec.luau**
+# Test
+
+A minimal, fast test runner for Luau projects with a beautiful CLI interface.
+
+## Features
+
+- ⚡ **Fast**: Minimal overhead, optimized for speed
+- 🎨 **Beautiful Output**: Colored terminal output with progress bars and timing
+- 🔍 **Smart Discovery**: Automatically finds and runs all test files
+- 🎯 **Focus Mode**: Run only specific tests during development
+- ⏭️ **Skip Tests**: Easily skip tests that aren't ready
+- 📦 **Zero Dependencies**: Pure Luau implementation
+- 🛠️ **Flexible**: Multiple ways to define your tests
+
+## Quick Start
+
+1. Create a test file with `.spec.luau` extension:
+
 ```luau
 local run = {}
 
 function run.should_run()
+    assert(1 + 1 == 2, "Basic math should work")
 end
 
 return run
 ```
-**tests/b.spec.luau**
+
+2. Run your tests:
+
+```bash
+pesde x ernisto/test -t lune tests
+```
+
+## Test File Formats
+
+### Advanced Format
+
 ```luau
 local run, focus, skip = {}, {}, {}
 
-function focus.should_run_this_test()
-    print('debugging here')
-end
-function run.should_ignore_this_test()
+function run.should_skip_this_test()
     error('shouldnt run')
 end
 
-return { run = run, focus = focus, skip = skip, name = 'a' }
+function focus.should_focus_this_test()
+    print('debugging here')
+end
+
+function skip.should_skip_this_test()
+    error('shouldnt run')
+end
+
+return { run = run, focus = focus, skip = skip, name = 'my_suite' }
 ```
-**tests/c.spec.luau**
+
+### Helpers
+
+To use our helpers, you must to install the package
+
+```bash
+pesde install ernisto/test
+```
+
 ```luau
+-- tests/example.spec.luau
 local test = require('@pkg/test')
 local spec, run, focus, skip = test.spec()
 
-function run.should_run_this_test(deep_assert)  -- soon
+function run.should_pass_simple_test()
+    assert(1 + 1 == 2, "Basic math should work")
 end
-function skip.should_skip_this_test(deep_assert)
-    error('shouldnt run')
+
+function run.should_handle_strings()
+    local result = "hello" .. " " .. "world"
+    assert(result == "hello world", "String concatenation failed")
 end
 
 return spec
 ```
-After define them, just check the tests status running in your terminal
-```bash
-pesde x ernisto/test tests
-```
-And you should be able to see something like this:
 
-# Contribuite
-Nothing to say, just note if you are in vs code you shouldnt see nothing
-except by .luau files, i just recommended by extension to toggle a vsc setting
-to be able to see those files is opted-in
+## CLI Usage
+
+```bash
+# Run tests in current directory
+pesde x ernisto/test -t lune
+
+# Run tests in specific directory
+pesde x ernisto/test -t lune -- tests/
+
+# Run tests in multiple directories
+pesde x ernisto/test -t lune -- tests/ src/tests/
+```
+
+## Focus Mode
+
+When you have focused tests (tests in the `focus` table), only those tests will run:
+
+```luau
+function focus.should_debug_this_specific_issue()
+    print('debugging here')
+end
+
+function run.should_skip_this_test()
+    error('shouldnt run')
+end
+```
+
+This is perfect for debugging specific issues without running the entire test suite.
+
+## Skip Tests
+
+Use the `skip` table to temporarily disable tests:
+
+```luau
+function run.should_run_this_test()
+    -- test here
+end
+
+function skip.should_skip_this_test()
+    error('shouldnt run')
+end
+```
+
+## Suggested Project Structure
+
+```
+your-project/
+├── tests/
+│   ├── math.spec.luau
+│   ├── strings.spec.luau
+│   └── utils.spec.luau
+├── src/
+│   └── your-code.luau
+└── pesde.toml
+```
+
+## Contributing
+
+Contributions are welcome! Please note:
+
+- If you're using VS Code, you might need to enable `.luau` file visibility in your workspace settings, or through our recommended extension
+- All code should be written in Luau
+- Tests should be added for new features
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
