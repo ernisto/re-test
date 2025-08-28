@@ -1,0 +1,10 @@
+{
+    "languageMode": "strict",
+    "globals": [
+        "warn"
+    ],
+    "aliases": {
+        "lib": "lib",
+        "lune": "~/.lune/.typedefs/0.8.9"
+    }
+}

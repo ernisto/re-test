@@ -1,0 +1,6 @@
+# pesde
+**/*_packages/**
+**/.pesde/**
+
+# local secrets
+.env
