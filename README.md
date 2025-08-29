@@ -5,7 +5,7 @@ A minimal, fast test runner for Luau projects with a beautiful CLI interface.
 ## Features
 
 - ⚡ **Fast**: Minimal overhead, optimized for speed
-- 🎨 **Beautiful Output**: Colored terminal output with progress bars and timing
+- 🎨 **Beautiful Output**: Colored terminal output with progress bars and timing (requires Nerd Fonts)
 - 🔍 **Smart Discovery**: Automatically finds and runs all test files
 - 🎯 **Focus Mode**: Run only specific tests during development
 - ⏭️ **Skip Tests**: Easily skip tests that aren't ready
@@ -29,8 +29,10 @@ return run
 2. Run your tests:
 
 ```bash
-pesde x ernisto/test -t lune tests
+pesde x ernisto/test -t lune -- tests
 ```
+
+> **Note**: For the best experience with special characters and icons, install a [Nerd Font](https://www.nerdfonts.com/) for your terminal.
 
 ## Test File Formats
 
@@ -54,9 +56,9 @@ end
 return { run = run, focus = focus, skip = skip, name = 'my_suite' }
 ```
 
-### Helpers
+### Using Test Helper (Recommended)
 
-To use our helpers, you must to install the package
+To use the test helper, you must install the package
 
 ```bash
 pesde install ernisto/test
@@ -139,7 +141,7 @@ your-project/
 
 Contributions are welcome! Please note:
 
-- If you're using VS Code, you might need to enable `.luau` file visibility in your workspace settings, or through our recommended extension
+- If you're using VS Code, you might need to enable `.luau` file visibility in your workspace settings
 - All code should be written in Luau
 - Tests should be added for new features
 
