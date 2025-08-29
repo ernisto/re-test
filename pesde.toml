@@ -1,16 +1,14 @@
 name = "ernisto/test"
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha.3"
 description = "minimal test runner"
 authors = ["ernisto <joaovitordesouza707@gmail.com>"]
 license = "MIT"
 
-workspace_members = ["lib", "cli/*/"]
+workspace_members = ["lib", "cli/*"]
 includes = [
     "pesde.toml",
     "README.md",
     "LICENSE",
-    ".luaurc",
-    "lib/**/*.luau",
 ]
 
 [indices]
