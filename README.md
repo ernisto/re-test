@@ -32,7 +32,12 @@ return run
 pesde x ernisto/test -- tests
 ```
 
+3. See the output
+
 > **Note**: For the best experience with special characters and icons, install a [Nerd Font](https://www.nerdfonts.com/) for your terminal.
+
+<img width="854" height="459" alt="image" src="https://github.com/user-attachments/assets/c0ccb628-47f8-436a-af5b-4760d5318c15" />
+
 
 ## Test File Formats
 
