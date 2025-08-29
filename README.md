@@ -29,7 +29,7 @@ return run
 2. Run your tests:
 
 ```bash
-pesde x ernisto/test -t lune -- tests
+pesde x ernisto/test -- tests
 ```
 
 > **Note**: For the best experience with special characters and icons, install a [Nerd Font](https://www.nerdfonts.com/) for your terminal.
@@ -85,13 +85,13 @@ return spec
 
 ```bash
 # Run tests in current directory
-pesde x ernisto/test -t lune
+pesde x ernisto/test
 
 # Run tests in specific directory
-pesde x ernisto/test -t lune -- tests/
+pesde x ernisto/test -- tests/
 
 # Run tests in multiple directories
-pesde x ernisto/test -t lune -- tests/ src/tests/
+pesde x ernisto/test -- tests/ src/tests/
 ```
 
 ## Focus Mode

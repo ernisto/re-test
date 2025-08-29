@@ -2,8 +2,8 @@
 # It is not intended for manual editing.
 format = 2
 name = "ernisto/test"
-version = "0.0.2-alpha"
-target = "luau"
+version = "0.1.0-alpha.2"
+target = "lune"
 
-[workspace."ernisto/test"]
-lune = "cli/lune"
+[workspace."ernisto/testlib"]
+luau = "lib"

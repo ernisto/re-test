@@ -1,23 +1,22 @@
-name = "ernisto/test"
-version = "0.1.0-alpha.2"
-description = "minimal test runner"
+name = "ernisto/testlib"
+version = "0.1.0-alpha.1"
+description = "minimal test collector"
 authors = ["ernisto <joaovitordesouza707@gmail.com>"]
 license = "MIT"
 
-workspace_members = ["lib", "cli/*/"]
 includes = [
     "pesde.toml",
-    "README.md",
     "LICENSE",
     ".luaurc",
-    "lib/**/*.luau",
+    "*.luau",
 ]
 
 [indices]
 default = "https://github.com/pesde-pkg/index"
 
 [target]
-environment = "lune"
+environment = "luau"
+lib = "lib.luau"
 
 [engines]
 pesde = "^0.7.1"

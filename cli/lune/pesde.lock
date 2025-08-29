@@ -2,12 +2,12 @@
 # It is not intended for manual editing.
 format = 2
 name = "ernisto/test"
-version = "0.0.2-alpha.2"
+version = "0.1.0-alpha.2"
 target = "lune"
 
-[graph."ernisto/test@0.0.2-alpha.2 luau"]
-direct = ["test", { name = "ernisto/test", version = "^0.0.2-alpha.2", index = "default", target = "luau" }, "standard"]
+[graph."ernisto/testlib@0.1.0-alpha.1 luau"]
+direct = ["test", { path = "../../lib" }, "standard"]
 
-[graph."ernisto/test@0.0.2-alpha.2 luau".pkg_ref]
-ref_ty = "pesde"
-index_url = "https://github.com/pesde-pkg/index"
+[graph."ernisto/testlib@0.1.0-alpha.1 luau".pkg_ref]
+ref_ty = "path"
+path = "../../lib"

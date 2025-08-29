@@ -1,4 +1,4 @@
-local display = require('@lib/display')
+local display = require('./display')
 local render_bar = display.render_bar
 local txt_color = display.txt_color
 local format_time = display.time
@@ -93,7 +93,7 @@ local function run(specs: { spec })
 			end
 
 			local function with_trace(err)
-				return debug.traceback(reset .. '│   ' .. dim .. err, 2)
+				return debug.traceback(reset .. '│   ' .. dim .. err, 2):gsub('\n[^\n]+\n[^\n]+\n?$', '')
 			end
 
 			local start = os.clock()

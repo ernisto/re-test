@@ -5,6 +5,7 @@ authors = ["ernisto <joaovitordesouza707@gmail.com>"]
 license = "MIT"
 includes = [
     "pesde.toml",
+    "LICENSE",
     ".luaurc",
     "**/*.luau",
 ]
@@ -22,5 +23,5 @@ pesde = "^0.7.1"
 lune = ">0.8.0"
 
 [dependencies]
-# test = { path = "../../" }
-test = { name = "ernisto/test", version = "^0.1.0-alpha.2", target = "luau" }
+test = { name = "ernisto/testlib", version = "^0.1.0-alpha.1", target = "luau" }
+# test = { path = "../../lib" }

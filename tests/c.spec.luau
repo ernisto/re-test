@@ -1,4 +1,4 @@
-local test = require('@lib/init')
+local test = require('@lib/lib')
 local spec, run, _focus, skip = test.spec()
 
 function run.should_run_this_test() end
