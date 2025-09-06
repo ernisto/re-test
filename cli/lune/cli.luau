@@ -1,9 +1,8 @@
-local fs = require('@lune/fs')
+local file = require('./file')
 local process = require('@lune/process')
+local stdio = require('@lune/stdio')
 local test = require('@pkg/test')
 
-local paths = if process.args[1] then process.args else { '.' }
-local parents_children = { paths }
 -- utils
 local red = '\27[91m'
 local yellow = '\27[33m'
@@ -31,22 +30,17 @@ local function warn(msg: string)
 	print(yellow .. msg .. reset)
 end
 
+-- script
+local installation_path = file.module_location()
+local paths: { string } = if process.args[1] then table.clone(process.args) else { '' }
 local specs = {}
 
-for _, children in parents_children do
-	for _, child in children do
-		if fs.isDir(child) then
-			local children_path = {}
-			for i, child_name in fs.readDir(child) do
-				children_path[i] = child .. '/' .. child_name
-			end
+-- scan
+for _, child in file.read_descendants_paths(paths[1]) do
+	if not child:match('%.spec%.luau?$') then continue end
 
-			table.insert(parents_children, children_path)
-			continue
-		end
-		if not child:match('%.spec%.luau?$') then continue end
-
-	local success, result = xpcall(require, fancy_traceback, child)
+	local require_path = file.relative_path_to(installation_path, process.cwd .. child):gsub('%.luau?$', '')
+	local success, result = xpcall(require, fancy_traceback, require_path)
 
 	if not success then
 		warn(`│ Error ocurred during require({cyan}'{child}'{yellow})\n{red}│ {result:gsub('\n', '\n│ ')}`)
@@ -57,13 +51,13 @@ for _, children in parents_children do
 		continue
 	end
 
-		local spec = if type(result.run) == 'table' then result else { run = result }
-		spec.name = spec.name or child:match('([^/\\]+)%.spec%.luau?$')
-		spec.path = spec.path or child
-		spec.focus = spec.focus or {}
-		spec.skip = spec.skip or {}
-		table.insert(specs, spec)
-	end
+	local spec = if type(result.run) == 'table' then result else { run = result }
+	spec.name = spec.name or child:match('([^/\\]+)%.spec%.luau?$')
+	spec.path = spec.path or child
+	spec.focus = spec.focus or {}
+	spec.skip = spec.skip or {}
+	table.insert(specs, spec)
 end
 
+-- run
 test.run(specs)
