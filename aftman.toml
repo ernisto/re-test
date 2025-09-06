@@ -5,4 +5,4 @@
 
 [tools]
 stylua = "JohnnyMorganz/StyLua@2.1.0"
-luau-lsp = "JohnnyMorganz/luau-lsp@1.53.1"
+luau-lsp = "JohnnyMorganz/luau-lsp@1.53.3"
