@@ -32,7 +32,7 @@ end
 
 -- script
 local installation_path = file.module_location()
-local paths: { string } = if process.args[1] then table.clone(process.args) else { '' }
+local paths: { string } = if process.args[1] then table.clone(process.args) else { '.' }
 local specs = {}
 
 -- scan
