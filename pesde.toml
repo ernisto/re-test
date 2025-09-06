@@ -19,3 +19,4 @@ environment = "lune"
 
 [engines]
 pesde = "^0.7.1"
+lune = "^0.10.2"

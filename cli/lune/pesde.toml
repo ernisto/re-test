@@ -20,7 +20,7 @@ bin = "cli.luau"
 
 [engines]
 pesde = "^0.7.1"
-lune = ">0.8.0"
+lune = "^0.10.2"
 
 [dependencies]
 test = { name = "ernisto/testlib", version = "^0.1.0-alpha.1", target = "luau" }
