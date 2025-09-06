@@ -39,6 +39,7 @@ local function clear_path(path: absolute_path): string
 		:gsub('[/\\]%.([/\\])', '%1') -- remove '.'
 		:gsub('[/\\][/\\]', '/') -- remove empty names
 		:gsub('[/\\]$', '') -- remove post '/'
+		:gsub('^%.[/\\]', '')
 end
 
 local function relative_path_to(from: absolute_path, to: absolute_path): relative_path
@@ -79,4 +80,5 @@ return table.freeze {
 	read_descendants_paths = read_descendants_paths_handle,
 	relative_path_to = relative_path_to,
 	module_location = module_location,
+	clear_path = clear_path,
 }

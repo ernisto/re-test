@@ -53,7 +53,10 @@ for _, child in file.read_descendants_paths(paths[1]) do
 
 	local spec = if type(result.run) == 'table' then result else { run = result }
 	spec.name = spec.name or child:match('([^/\\]+)%.spec%.luau?$')
-	spec.path = spec.path or child
+	spec.path = if spec.path
+		then file.relative_path_to(process.cwd, spec.path)
+		else file.clear_path((child:gsub('%.luau?$', '')))
+
 	spec.focus = spec.focus or {}
 	spec.skip = spec.skip or {}
 	table.insert(specs, spec)
