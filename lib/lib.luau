@@ -10,6 +10,7 @@ local nerdfont = display.nerdfont
 local theme = display.theme
 local reset = display.reset
 local dim = display.dim
+local no_dim = '\27[22m'
 
 type case_defs = { [string]: test_fn }
 type case = { name: string, fn: test_fn, skipped: true?, focused: true? }
@@ -131,19 +132,19 @@ local function run(env_fs: env_fs, specs: { spec }): suite_test_result
 			for i, stackframe in stackframes do
 				if i == #stackframes - 2 then break end
 				local code, path, error_line = stackframe.code, stackframe.path, stackframe.line
-				local _def_line, def_name = debug.info(stackframe.func, 'ln')
+
 				if error_line == -1 then continue end
+				local def_name = debug.info(stackframe.func, 'n')
 
 				-- stylua: ignore
-				display ..= `\n{dim}{theme.number}{env_fs.abs_path_to_cwd_relative(path)}:{error_line}: `
-					.. `{theme.keyword}function`
-					.. (if def_name then ` {theme.func_name}{def_name}` else '')
+				display ..= `\n  {theme.number}{env_fs.abs_path_to_cwd_relative(path)}.luau:{error_line} `
+					.. `{theme.keyword}function {theme.func_name}{def_name or ''}{txt_color()}`
 
 				if not code then continue end
 				local error_code_line = code:split('\n')[error_line]:gsub('^%s+', '')
 
-				local first_line = `{env_fs.abs_path_to_cwd_relative(path)}:{error_line}: `
-				display ..= '\n' .. string.rep(' ', #first_line + 4) .. dim .. highlight_syntax(error_code_line)
+				-- stylua: ignore
+				display ..= `\n  {string.format('%4i', error_line)} | {no_dim}{highlight_syntax(error_code_line)}{dim}`
 			end
 
 			return msg, display
