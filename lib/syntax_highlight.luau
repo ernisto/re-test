@@ -164,7 +164,7 @@ local function highlight_syntax(code)
 	}
 
 	local function word()
-		local _, e, name = string.find(code, `^([%a_][%w_]*)%s*`, init)
+		local _, e, name, space = string.find(code, `^([%a_][%w_]*)(%s*)`, init)
 		if not e or not name then return end
 
 		for _, lib in { globals, math, vector, bit32, string, utf8, table, coroutine, buffer, debug, os } do
@@ -177,7 +177,7 @@ local function highlight_syntax(code)
 		end
 
 		if not table.find(keywords, name) then return end
-		display ..= theme.keyword .. name .. RESET
+		display ..= theme.keyword .. name .. space :: any .. RESET
 		init = 1 + e
 		return true
 	end
