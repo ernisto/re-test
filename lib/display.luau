@@ -40,7 +40,7 @@ local nerdfont = {
 
 	test = '\u{f0668}',
 	lua = '\u{f08b1}',
-	skip = '\u{f04ac}',
+	skip = '⏭',
 	check = '✔',
 	bad = '✖',
 
