@@ -36,7 +36,8 @@ pesde x ernisto/test -- tests
 
 > **Note**: For the best experience with special characters and icons, install a [Nerd Font](https://www.nerdfonts.com/) for your terminal.
 
-<img width="1159" height="615" alt="image" src="https://github.com/user-attachments/assets/c8ea331c-d7f8-4649-99dc-ff6814e11909" />
+<img width="884" height="550" alt="image" src="https://github.com/user-attachments/assets/31a35ed3-5802-474f-946e-f20e438cdda7" />
+
 
 
 
