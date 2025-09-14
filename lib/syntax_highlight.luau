@@ -125,7 +125,7 @@ local function highlight_syntax(code)
 		return true
 	end
 
-	local chars = { '.', ',', '+', '-', '*', '/', '^', '%', '&', '|', '?', '>', '=', '<' }
+	local chars = { '.', ',', '+', '-', '*', '/', '^', '%', '&', '|', '?', '>', '=', '<', ':', '#' }
 	local close_paren = { ')', ']', '}' }
 	local open_paren = { '(', '[', '{' }
 
@@ -161,6 +161,8 @@ local function highlight_syntax(code)
 		tonumber = true, tostring = true, type = true, unpack = true, xpcall = true,
 		getfenv = true, setfenv = true, collectgarbage = true, setmetatable = true,
 		print = true, require = true, time = true,  assert = true, gcinfo = true,
+		table = true, coroutine = true, buffer = true, debug = true, os = true,
+		math = true, vector = true, bit32 = true, string = true, utf8 = true,
 	}
 
 	local function word()
