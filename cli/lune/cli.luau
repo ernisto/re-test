@@ -1,6 +1,11 @@
+local process = require('@lune/process')
+if (require('@lune/net') :: any).tcp == nil then
+	print(`\27[91mLune version below 0.10.0 detected, pls make sure you are using lune 0.10.2\27[39m`)
+	return process.exit(1)
+end
+
 local file = require('./file')
 local fs = require('@lune/fs')
-local process = require('@lune/process')
 local stdio = require('@lune/stdio')
 local test = require('@pkg/test')
 
