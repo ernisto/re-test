@@ -67,7 +67,9 @@ local function segment(color: number, icon: string, count: number, text: string,
 		.. back_color(color)
 		.. (sep and ' ' or '')
 		.. BOLD
+		.. txt_color(0)
 		.. `{icon} {count} {text}`
+		.. txt_color(color)
 		.. string.rep(' ', size)
 		.. RESET
 end
@@ -76,6 +78,7 @@ local function tag(color: number, icon: string, name: string): string
 		.. BOLD
 		.. nerdfont.left_corner
 		.. back_color(color)
+		.. txt_color(0)
 		.. `{icon} {name}`
 		.. RESET
 		.. txt_color(color)
