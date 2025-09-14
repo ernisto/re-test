@@ -97,6 +97,15 @@ local function task_poll()
 
 	return add, wait
 end
+local function parse_error(path_msg: any): (string, string)
+	local msg = if type(path_msg) == 'string'
+		then path_msg:gsub('^C:[^:]+:%d+:%s*', '')
+		elseif type(path_msg) == 'table' and rawget(path_msg, 'why') then tostring(path_msg.why)
+		else tostring(path_msg)
+
+	local a, b = string.match(msg, '^([^\n]*)(.*)')
+	return a :: any, b :: any
+end
 
 export type suite_test_result = { time: number, tests: number, fails: number, passes: number, skips: number }
 local function run(env_fs: env_fs, specs: { spec }): suite_test_result
@@ -107,7 +116,7 @@ local function run(env_fs: env_fs, specs: { spec }): suite_test_result
 	local total_failed = 0
 	local total_skipped = 0
 
-	local function draw_backtrace(msg: string): () -> string
+	local function draw_backtrace(msg: any): () -> string
 		local stackframes = {}
 		local level = 2
 
@@ -186,12 +195,14 @@ local function run(env_fs: env_fs, specs: { spec }): suite_test_result
 			else
 				failed += 1
 				local path_msg, backtrace = err()
+				local title, sub = parse_error(path_msg)
+
 				local nested_backtrace = backtrace:gsub('\n', reset .. '\n│   ' .. dim)
-				local msg = path_msg:gsub('^C:[^:]+:%d+: ', '')
+				local err_desc = sub:gsub('\n', '\n│     ')
 
 				local prefix = tag(1, display.nerdfont.bad, 'FAIL')
 				print(
-					`│   {prefix} {txt_color(1)}{bold(name)}{reset} {msg} {dim}{timer}{nested_backtrace}{reset}\n│`
+					`│   {prefix} {txt_color(1)}{bold(name)}{reset} {title} {dim}{timer}{reset}{err_desc}{dim}{nested_backtrace}{reset}\n│`
 				)
 			end
 		end
