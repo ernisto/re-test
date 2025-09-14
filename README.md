@@ -96,9 +96,6 @@ pesde x ernisto/test
 
 # Run tests in specific directory
 pesde x ernisto/test -- tests/
-
-# Run tests in multiple directories
-pesde x ernisto/test -- tests/ src/tests/
 ```
 
 ## Focus Mode
