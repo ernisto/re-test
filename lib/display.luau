@@ -1,3 +1,5 @@
+local syntax_highlight = require('./syntax_highlight')
+
 -- utils
 local function back_color(c: number?)
 	return `\27[10{c or 9}m`
@@ -136,7 +138,10 @@ return table.freeze({
 	render_bar = render_bar,
 	time = format_time,
 
+	highlight_syntax = syntax_highlight.highlight,
+	theme = syntax_highlight.theme,
 	nerdfont = nerdfont,
+
 	bold = bold,
 	bkg = back_color,
 	txt_color = txt_color,
