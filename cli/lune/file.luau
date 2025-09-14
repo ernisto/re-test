@@ -66,8 +66,10 @@ local function relative_path_to(from: absolute_path, to: absolute_path): relativ
 end
 
 local function module_location()
-	local path = ''
-	for ancestor in debug.info(2, 's'):gmatch('[^/\\]+') do
+	local dirty_path = debug.info(2, 's')
+	local path = dirty_path:match('^[/\\]')
+
+	for ancestor in dirty_path:gmatch('[^/\\]+') do
 		if ancestor == '.' then continue end
 		if not fs.isDir(path .. ancestor) then break end
 		path ..= ancestor .. '/'
