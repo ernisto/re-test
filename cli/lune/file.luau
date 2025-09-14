@@ -34,8 +34,12 @@ local function read_descendants_paths_handle(path: path): { path }
 end
 
 local function clear_path(path: absolute_path): string
+	local count = 0
+	repeat
+		path, count = path:gsub('[/\\]([^/\\%.]+)[/\\]%.%.', '') -- resolve '..'
+	until count == 0
+
 	return path
-		:gsub('[/\\]([^/\\%.]+)[/\\]%.%.', '') -- resolve '..'
 		:gsub('[/\\]%.([/\\])', '%1') -- remove '.'
 		:gsub('[/\\][/\\]', '/') -- remove empty names
 		:gsub('[/\\]$', '') -- remove post '/'
