@@ -74,7 +74,7 @@ pesde install ernisto/test
 ```luau
 -- tests/example.spec.luau
 local test = require('@pkg/test')
-local spec, run, focus, skip = test.spec()
+local spec, run, focus, skip = test.suite()
 
 function run.should_pass_simple_test()
     assert(1 + 1 == 2, "Basic math should work")

@@ -12,10 +12,10 @@ local reset = display.reset
 local dim = display.dim
 local no_dim = '\27[22m'
 
+type test_fn = () -> ()
 type case_defs = { [string]: test_fn }
 type case = { name: string, fn: test_fn, skipped: true?, focused: true? }
-type test_fn = () -> ()
-type spec = { name: string, path: string, run: case_defs, focus: case_defs, skip: case_defs }
+type suite = { name: string, path: string, run: case_defs, focus: case_defs, skip: case_defs }
 
 type cwd_path = string -- ./**/*.luau?
 type absolute_path = string -- C:/**/*.luau?
@@ -25,26 +25,26 @@ export type env_fs = {
 }
 
 -- functions
-local function spec_test(input_name: string?): (spec, ...case_defs)
+local function suite(input_name: string?): (suite, ...case_defs)
 	local path = debug.info(2, 's')
 	local lune_path = path:match('%[string (%b"")%]')
 	if lune_path then path = lune_path:sub(2, -2) end
 
-	local name = input_name or path:gsub('%.luau?$', ''):gsub('%.spec$', ''):match('([^/\\]+)$')
+	local name = input_name or path:gsub('%.luau?$', ''):gsub('%.suite$', ''):match('([^/\\]+)$')
 	local run = {}
 	local focus = {}
 	local skip = {}
 	return { name = name, path = path, run = run, focus = focus, skip = skip }, run, focus, skip
 end
 
-type spec_collection = { spec: spec, cases: { case } }
-local function collect(specs: { spec }): { count: number, specs: { spec_collection } }
+type collected_suite = { suite: suite, cases: { case } }
+local function collect(suites: { suite }): { count: number, suites: { collected_suite } }
 	local count = 0
 	local theres_focused = false
-	local spec_collection = {}
+	local collected_suites = {}
 
-	for _, spec in specs do
-		local run, focus, skip = spec.run, spec.focus, spec.skip
+	for _, suite in suites do
+		local run, focus, skip = suite.run, suite.focus, suite.skip
 		local test_cases: { case } = {}
 
 		for name, fn in run do
@@ -57,12 +57,12 @@ local function collect(specs: { spec }): { count: number, specs: { spec_collecti
 			table.insert(test_cases, { name = name, fn = fn, focused = true })
 			theres_focused = true
 		end
-		table.insert(spec_collection, { spec = spec, cases = test_cases })
+		table.insert(collected_suites, { suite = suite, cases = test_cases })
 		count += #test_cases
 	end
 
 	if theres_focused then
-		for _, collection in spec_collection do
+		for _, collection in collected_suites do
 			local tests = collection.cases
 			for index = #tests, 1, -1 do
 				local test = tests[index]
@@ -74,7 +74,7 @@ local function collect(specs: { spec }): { count: number, specs: { spec_collecti
 		end
 	end
 
-	return { count = count, specs = spec_collection }
+	return { count = count, suites = collected_suites }
 end
 
 local function task_poll()
@@ -108,9 +108,9 @@ local function parse_error(path_msg: any): (string, string)
 end
 
 export type suite_test_result = { time: number, tests: number, fails: number, passes: number, skips: number }
-local function run(env_fs: env_fs, specs: { spec }): suite_test_result
+local function run(env_fs: env_fs, suites: { suite }): suite_test_result
 	local total_time = 0
-	local total = collect(specs)
+	local total = collect(suites)
 
 	local total_passed = 0
 	local total_failed = 0
@@ -161,10 +161,10 @@ local function run(env_fs: env_fs, specs: { spec }): suite_test_result
 		return await_extract_err
 	end
 
-	for _, collection in total.specs do
+	for _, collection in total.suites do
 		local tests = collection.cases
-		local collection_name = collection.spec.name
-		print('│ ' .. tag(4, nerdfont.lua, collection_name) .. ' ' .. dim .. collection.spec.path .. reset)
+		local collection_name = collection.suite.name
+		print('│ ' .. tag(4, nerdfont.lua, collection_name) .. ' ' .. dim .. collection.suite.path .. reset)
 
 		local skipped = 0
 		local failed = 0
@@ -227,6 +227,6 @@ end
 
 -- module
 return table.freeze {
-	spec = spec_test,
+	suite = suite,
 	run = run,
 }
