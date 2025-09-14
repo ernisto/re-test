@@ -2,5 +2,5 @@
 # It is not intended for manual editing.
 format = 2
 name = "ernisto/testlib"
-version = "0.1.0-alpha.1"
+version = "0.1.0-beta.1"
 target = "luau"

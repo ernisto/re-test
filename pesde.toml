@@ -1,5 +1,5 @@
 name = "ernisto/test"
-version = "0.1.0-alpha.5"
+version = "0.1.0-beta.1"
 description = "minimal test runner"
 authors = ["ernisto <joaovitordesouza707@gmail.com>"]
 license = "MIT"
