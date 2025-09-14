@@ -67,7 +67,7 @@ end
 
 local function module_location()
 	local dirty_path = debug.info(2, 's')
-	local path = dirty_path:match('^[/\\]')
+	local path = dirty_path:match('^[/\\]?')
 
 	for ancestor in dirty_path:gmatch('[^/\\]+') do
 		if ancestor == '.' then continue end
