@@ -51,5 +51,5 @@
     "**/*_packages/**"
   ],
   "luau-lsp.platform.type": "standard",
-  "stylua.targetReleaseVersion": "latest"
+  "stylua.targetReleaseVersion": "2.2.0"
 }
