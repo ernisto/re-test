@@ -203,10 +203,18 @@ local function run(env_fs: env_fs, specs: { spec }): suite_test_result
 
 	print('╰' .. render_bar(total.count, total_passed, total_failed, total_skipped, total_time))
 	print()
+
+	return table.freeze {
+		time = total_time,
+		tests = total.count,
+		fails = total_failed,
+		passes = total_passed,
+		skips = total_skipped,
+	}
 end
 
 -- module
-return table.freeze({
+return table.freeze {
 	spec = spec_test,
 	run = run,
-})
+}

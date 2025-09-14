@@ -44,6 +44,7 @@ local lune_env = {
 }
 
 -- scan
+local did_require_fail = false
 for _, cwd_to_child in file.read_descendants_paths(paths[1]) do
 	if not cwd_to_child:match('%.spec%.luau?$') then continue end
 
@@ -52,10 +53,12 @@ for _, cwd_to_child in file.read_descendants_paths(paths[1]) do
 
 	if not success then
 		warn(`│ Error ocurred during require({cyan}'{cwd_to_child}'{yellow})\n{red}│ {result:gsub('\n', '\n│ ')}`)
+		did_require_fail = did_require_fail or true
 		continue
 	end
 	if type(result) ~= 'table' then
 		warn(`Unexpected return ({cyan}{stdio.format(result)}{yellow}) during require({cyan}'{cwd_to_child}'{yellow})`)
+		did_require_fail = did_require_fail or true
 		continue
 	end
 
@@ -71,4 +74,5 @@ for _, cwd_to_child in file.read_descendants_paths(paths[1]) do
 end
 
 -- run
-test.run(lune_env, specs)
+local result = test.run(lune_env, specs)
+if did_require_fail or result.fails > 0 then process.exit(1) end
