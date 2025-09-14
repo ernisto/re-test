@@ -57,6 +57,9 @@ local function collect(suites: { suite }): { count: number, suites: { collected_
 			table.insert(test_cases, { name = name, fn = fn, focused = true })
 			theres_focused = true
 		end
+		table.sort(test_cases, function(case1, case2)
+			return debug.info(case1.fn, 'l') < debug.info(case2.fn, 'l')
+		end)
 		table.insert(collected_suites, { suite = suite, cases = test_cases })
 		count += #test_cases
 	end
@@ -73,6 +76,10 @@ local function collect(suites: { suite }): { count: number, suites: { collected_
 			end
 		end
 	end
+
+	table.sort(collected_suites, function(suite1, suite2)
+		return suite1.suite.name < suite2.suite.name
+	end)
 
 	return { count = count, suites = collected_suites }
 end
