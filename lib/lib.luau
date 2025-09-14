@@ -125,7 +125,7 @@ local function run(env_fs: env_fs, suites: { suite }): suite_test_result
 
 	local function draw_backtrace(msg: any): () -> string
 		local stackframes = {}
-		local level = 2
+		local level = 1
 
 		local spawn_job, wait_all_jobs = task_poll()
 		repeat
