@@ -114,7 +114,7 @@ local function highlight_syntax(code)
 	end
 
 	local function callment()
-		local _, e, name, c = string.find(code, `^([%a_][%w_]*%s*)([%(\'\"])`, init)
+		local _, e, name, c = string.find(code, '^([%a_][%w_]*%s*)([%({\'"])', init)
 		if not e then
 			_, e, name, c = string.find(code, `^([%a_][%w_]*%s*)(%[=*%[)`, init)
 		end
