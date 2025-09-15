@@ -1,4 +1,4 @@
-local RESET = '\27[39m'
+local RESET = '\27[39m\27[22m'
 
 local theme = {
 	symbol = '\27[91m',
@@ -11,6 +11,7 @@ local theme = {
 	paren1 = '\27[32m',
 	paren2 = '\27[33m',
 	paren3 = '\27[34m',
+	comment = '\27[38m\27[02m',
 }
 
 local function highlight_syntax(code)
@@ -104,6 +105,34 @@ local function highlight_syntax(code)
 		return true
 	end
 
+	local function comment()
+		local _, e, raw = string.find(code, `^(%-%-[^\n]+)`, init)
+		if not e or not raw then return end
+
+		init = 1 + e
+		display ..= theme.comment .. raw .. RESET
+		return true
+	end
+	local function comment_block()
+		local _, e, eqs, raw = string.find(code, `^%-%-%[(=*)%[([^%]]*)`, init)
+		if not e or not eqs or not raw then return end
+
+		init = 1 + e
+		display ..= theme.comment .. '--[' .. eqs .. '[' .. raw
+
+		while string.sub(code, init, init + 1 + #eqs) ~= ']' .. eqs .. ']' do
+			local _, e, raw = string.find(code, `^[^%]]*`, init + 1)
+			if not e or not raw then continue end
+
+			init = 2 + e
+			display ..= '[' .. raw
+		end
+
+		init += 2 + #eqs
+		display ..= theme.escape .. ']' .. eqs .. ']' .. RESET
+		return true
+	end
+
 	local function number()
 		local _, e, raw = string.find(code, `^(%d[%de%+%-]*%s*)`, init)
 		if not e or not raw then return end
@@ -194,6 +223,8 @@ local function highlight_syntax(code)
 			or number()
 			or word()
 			or callment()
+			or comment_block()
+			or comment()
 			or symbol()
 		then
 			continue
