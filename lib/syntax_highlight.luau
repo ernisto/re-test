@@ -49,11 +49,15 @@ local function highlight_syntax(code)
 		display ..= theme.escape .. '[' .. eqs .. '[' .. theme.string .. raw
 
 		while string.sub(code, init, init + 1 + #eqs) ~= ']' .. eqs .. ']' do
-			local _, e, raw = string.find(code, `^[^%]]*`, init + 1)
-			if not e or not raw then continue end
+			local _, e2, raw2 = string.find(code, `^[^%]]+`, init + 1)
+			if not e2 or not raw2 then
+				display ..= string.sub(code, init, init)
+				init += 1
+				continue
+			end
 
-			init = 2 + e
-			display ..= '[' .. raw
+			init = 2 + e2
+			display ..= '[' .. raw2
 		end
 
 		init += 2 + #eqs
@@ -121,15 +125,19 @@ local function highlight_syntax(code)
 		display ..= theme.comment .. '--[' .. eqs .. '[' .. raw
 
 		while string.sub(code, init, init + 1 + #eqs) ~= ']' .. eqs .. ']' do
-			local _, e, raw = string.find(code, `^[^%]]*`, init + 1)
-			if not e or not raw then continue end
+			local _, e2, raw2 = string.find(code, `^[^%]]+`, init + 1)
+			if not e2 or not raw2 then
+				display ..= string.sub(code, init, init)
+				init += 1
+				continue
+			end
 
-			init = 2 + e
-			display ..= '[' .. raw
+			init = 2 + e2
+			display ..= '[' .. raw2
 		end
 
 		init += 2 + #eqs
-		display ..= theme.escape .. ']' .. eqs .. ']' .. RESET
+		display ..= ']' .. eqs .. ']' .. RESET
 		return true
 	end
 
